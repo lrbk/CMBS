@@ -147,18 +147,12 @@ def train_epoch(model, train_dataloader, criterion, criterion_event, optimizer, 
         data_time.update(time.time() - end_time)
         '''Feed input to model'''
         visual_feature, audio_feature, labels = batch_data
-
-        # visual_feature = visual_feature.float()
-        # audio_feature = audio_feature.float()
+        
         labels = labels.double().cuda()
         is_event_scores, raw_logits, event_scores = model(visual_feature, audio_feature)
-        # is_event_scores = is_event_scores.transpose(1, 0).squeeze().contiguous()
 
-        import numpy
-        # labels_foreground = labels[:, :, :-1]
-        # labels_BCE, labels_evn = labels_foreground.max(-1)
-        # labels_event, _ = labels_evn.max(-1)
-        # loss_is_event = criterion(is_event_scores, labels_BCE.double().cuda())
+      
+        
 
         loss_event_class = criterion_event(event_scores, labels)
         # loss_av_score = criterion_event(av_score, labels.double())
